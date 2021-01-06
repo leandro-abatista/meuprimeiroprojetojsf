@@ -19,6 +19,7 @@
 	<class>br.com.cursojsf.entidades.GenericDomain</class>
 	<class>br.com.cursojsf.entidades.Fornecedor</class>
 	<class>br.com.cursojsf.entidades.Produto</class>
+	<class>br.com.cursojsf.entidades.Teste</class>
 	
 	<!-- Propriedades JDBC -->
 	<properties>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset= UTF-8" />
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css" />
+	<h:outputScript library="jsc" name="scripts.js" />
+	<title>Cadastro de Testes</title>
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+	
+	<p:growl id="mensagem" />
+
+	<h:form id="formularioTeste" enctype="multipart/form-data">
+	
+	<p:panel id="painelTeste" style="background-color: #CDC9C9;">
+	
+		<p:fieldset legend="Dados do Teste" style="background-color: #CDC9C9; margin-bottom: 10px;">
+	
+		<h:panelGrid columns="2" style="margin-bottom:10px">
+
+			<p:outputLabel for="id" value="Código:" />
+			<p:inputText id="id" value="#{produtoBean.produto.id}" readonly="true" size="10"/>
+			
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2">
+			
+			<h:outputLabel for="datacadastro" value="Data Cadastro: " />
+			<p:calendar id="datacadastro" value="#{produtoBean.produto.dataCadastro}"
+			maxlength="15" pattern="dd/MM/yyyy" mask="true"
+			locale="pt_BR" timeZone="GMT-03:00"/>
+			
+			<h:outputLabel for="upload" value="Foto: " />
+			<p:fileUpload id="upload" value="#{produtoBean.arquivoFoto}"
+			mode="simple" label="Procurar..."                         
+			uploadLabel="Carregar"
+			cancelLabel="Cancelar"                              
+			dragDropSupport="true"
+			fileLimit="1" auto="true">
+			
+			</p:fileUpload>
+		
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4">
+			
+			<p:outputLabel for="descricao" value="Descrição:" />
+			<p:inputText id="descricao" value="#{produtoBean.produto.descricao}" size="50" 
+			required="true" requiredMessage="Informe o campo 'Descrição'"/>
+			
+		</h:panelGrid>
+		
+		<h:panelGrid columns="6">
+			
+			<h:outputLabel for="valorcompra" value="Valor de Compra: " />
+			<p:inputText id="valorcompra" maxlength="10" size="10"
+			value="#{produtoBean.produto.valorCompra}" required="true" type="currency" 
+			requiredMessage="O campo 'Valor de Compra' é obrigatório">
+			
+				<f:validateDoubleRange minimum="0.01" maximum="999999.99" />
+
+				<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+			
+			</p:inputText>
+			
+			<h:outputLabel for="valorvenda" value="Valor de Venda: " />
+			<p:inputText id="valorvenda" maxlength="10" size="10"
+			value="#{produtoBean.produto.valorVenda}" required="true" type="currency"
+			requiredMessage="O campo 'Valor de Venda' é obrigatório">
+			
+				<f:validateDoubleRange minimum="0.01" maximum="999999.99" />
+
+				<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+			
+			</p:inputText>
+			
+			
+			<h:outputLabel value="Quantidade: " />
+			<p:inputNumber id="quantidade" maxlength="5" size="10"
+			value="#{produtoBean.produto.quantidade}" required="true"
+			requiredMessage="O campo 'Quantidade' é obrigatório">
+
+				<f:validateLongRange minimum="1" maximum="1000" />
+
+			</p:inputNumber>
+		
+		</h:panelGrid>
+
+		
+		</p:fieldset>
+		
+		
+		<p:panelGrid>
+		
+			<p:commandButton action="#{produtoBean.salvar}" value="Salvar" title="Salvar"
+			update=":mensagem :formularioProduto :formularioTable:tabela"/>
+			
+			<p:commandButton id="botaolimpar"  
+			value="Limpar" title="Limpar Formulário" update="@form" immediate="true">
+				<f:ajax execute="botaolimpar" render="@form" />
+			</p:commandButton>
+		
+		</p:panelGrid>
+		
+	</p:panel>
+	
+	</h:form>
+
+	<h:form id="formularioTable">
+
+		<p:dataTable id="tabela" value="#{produtoBean.produtos}" var="pro" cellpadding="8" 
+		 width="100%" rules="all" styleClass="colunas" headerClass="cabecalho" 
+		 columnClasses="colunas" rows="5" paginator="true">
+		
+			<f:facet name="header" style="text-align: center;">
+				<h3>Lista de Produtos Cadastrados</h3>
+			</f:facet>
+		
+			<p:column style="text-align: center; width: 100px">
+				<f:facet name="header">Código</f:facet>
+				<h:outputText value="#{pro.id}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 60px; height: 60px;">
+				<f:facet name="header">Imagem</f:facet>
+				<h:commandLink actionListener="#{produtoBean.download}">
+					<h:graphicImage value="#{pro.fotoIconBase64}" />
+					<f:param name="fileDownloadId" value="#{pro.id}"/>
+				</h:commandLink>
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Descrição</f:facet>
+				<h:outputText value="#{pro.descricao}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 120px">
+				<f:facet name="header">Valor Compra</f:facet>
+				<h:outputText value="#{pro.valorCompra}">
+					
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"
+								currencySymbol="R$" type="currency" />
+				
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 120px">
+				<f:facet name="header">Valor Venda</f:facet>
+				<h:outputText value="#{pro.valorVenda}">
+					
+					<f:convertNumber locale="pt_BR" minFractionDigits="2"
+								currencySymbol="R$" type="currency" />
+				
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 40px">
+				<f:facet name="header">QTD</f:facet>
+				<h:outputText value="#{pro.quantidade}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 100px">
+				<f:facet name="header">Data Cadastro</f:facet>
+				<h:outputText value="#{pro.dataCadastro}">
+					
+					<f:convertDateTime locale="pt_BR" />
+				
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Editar</f:facet>
+				<p:commandLink update=":mensagem :formularioProduto :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{pro}" target="#{produtoBean.produto}"/>
+					<h:graphicImage value="/resources/img/edit.png" style="height: 28px; weidth: 28px; text-align: center; padding: 5px;" 
+					title="Atualizar"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Excluir</f:facet>
+				<p:commandLink action="#{produtoBean.remove}" update=":mensagem :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{pro}" target="#{produtoBean.produto}" />
+					<p:confirm header="Atenção" message="Tem certeza que deseja excluir este registro?"/>
+					<h:graphicImage value="/resources/img/exc28.png" style="height: 28px; weidth: 28px; padding: 5px;" 
+					title="Excluir"/>
+				</p:commandLink>
+			</p:column>
+			
+		
+		</p:dataTable>
+
+		<!-- Janela de confirmação -->
+		<p:confirmDialog global="true">
+
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" ícone="fa fa-check" />
+
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" ícone="fa fa-times" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+</h:body>	
+
+</html>
