@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css"/>
+	<title>Menu</title>
+</h:head>
+
+<h:body>
+
+		<h:form>
+		
+			<div class="cabecalho">
+			
+				<h:graphicImage height="60px" width="70px" library="img"
+				name="logo.png" style="margin: 20px;"/>
+
+			<p:toolbar>
+			
+				<f:facet name="left">
+				
+					<p:outputLabel>
+						Seja Bem Vindo!
+					</p:outputLabel>
+				
+				</f:facet>
+
+				<f:facet name="right">
+				
+					<p:menuButton value="Opção">
+						<p:menuitem icon="pi pi-sign-out" action="#{usuarioBean.deslogar}">Trocar Usuário</p:menuitem>
+					</p:menuButton>
+
+				</f:facet>
+
+			</p:toolbar>
+
+		</div>
+		
+			<p:menubar>
+				
+				<p:submenu label="Cadastro" icon="pi pi-pencil">
+				
+					<p:menuitem url="cadastrousuarios.jsf">Usuários</p:menuitem>
+					<p:menuitem url="cadastropessoas.jsf">Pessoas</p:menuitem>
+					<p:menuitem url="lancamento.jsf">Lançamentos</p:menuitem>
+					<p:menuitem url="cadastrofornecedores.jsf">Fornecedores</p:menuitem>
+					<p:menuitem url="cadastroprodutos.jsf">Produtos</p:menuitem>
+				
+				</p:submenu>
+				
+				
+			
+			</p:menubar>
+			
+		</h:form>
+
+	<br/>
+	<br/>
+	
+</h:body>	
+
+</html>

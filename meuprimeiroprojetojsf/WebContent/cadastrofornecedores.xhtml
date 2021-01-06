@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css" />
+	<h:outputScript library="jsc" name="scripts.js" />
+	<title>Cadastro de Usuários</title>
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+	
+	<p:growl id="mensagem" />
+
+	<h:form id="formularioFornecedor">
+	
+	<p:panel id="painelFornecedor" style="background-color: #CDC9C9;">
+	
+		<p:fieldset legend="Dados do Fornecedor" style="background-color: #CDC9C9; margin-bottom: 10px;">
+	
+		<h:panelGrid columns="2" style="margin-bottom:10px">
+
+			<p:outputLabel for="id" value="Código:" />
+			<p:inputText id="id" value="#{fornecedorBean.fornecedor.id}" readonly="true" size="10"/>
+			
+		</h:panelGrid>
+		
+		<h:panelGrid columns="2">
+			
+			<h:outputLabel for="datacadastro" value="Data Cadastro: " />
+			<p:calendar id="datacadastro" value="#{fornecedorBean.fornecedor.dataCadastro}"
+			maxlength="15" pattern="dd/MM/yyyy - HH:mm:ss" mask="true"
+			locale="pt_BR" timeZone="GMT-03:00"/>
+		
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4">
+			
+			<p:outputLabel for="razaosocial" value="Razão Social:" />
+			<p:inputText id="razaosocial" value="#{fornecedorBean.fornecedor.razaoSocial}" size="50" 
+			required="true" requiredMessage="Informe o campo 'Razão Social'"/>
+			
+			<p:outputLabel for="nomefantasia" value="Nome Fantazia:" />
+			<p:inputText id="nomefantasia" value="#{fornecedorBean.fornecedor.nomeFantasia}" size="50" 
+			required="true" requiredMessage="Informe o campo 'Nome Fantazia'"/>
+		
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4">
+			
+			<p:outputLabel for="cnpj" value="CNPJ: " />
+			<p:inputMask mask="99.999.999/9999-99" id="cnpj" value="#{fornecedorBean.fornecedor.cnpj}" size="25"
+			required="true" requiredMessage="Informe o campo 'CNPJ'"/>
+
+			<p:outputLabel for="inscestadual" value="Insc. Estadual:" />
+			<p:inputText id="inscestadual" value="#{fornecedorBean.fornecedor.inscricaoEstadual}" size="20"
+			required="true" requiredMessage="Informe o campo 'Insc. Estadual'" />
+		
+		</h:panelGrid>
+
+		<h:panelGrid columns="6">
+
+			<h:outputLabel for="telfixo" value="Telefone Fixo: " />
+			<p:inputMask mask="(99) 9999-9999" id="telfixo" value="#{fornecedorBean.fornecedor.telFixo}" />
+
+			<h:outputLabel for="telcelular1" value="Celular 1: " />
+			<p:inputMask mask="(99) 9.9999-9999" id="telcelular1" value="#{fornecedorBean.fornecedor.telCelular1}" />
+
+			<h:outputLabel for="telcelular2" value="Celular 2:" />
+			<p:inputMask mask="(99) 9.9999-9999" id="telcelular2" value="#{fornecedorBean.fornecedor.telCelular2}" />
+
+		</h:panelGrid>
+
+		<h:panelGrid columns="2">
+			
+			<p:outputLabel for="email" value="Email:" />
+			<p:inputText id="email" value="#{fornecedorBean.fornecedor.email}" size="50" 
+			required="true" requiredMessage="Informe o campo 'E-mail'"/>
+			
+			<p:outputLabel for="funcionamento" value="Situação de Funcionamento: " />
+			<p:selectBooleanCheckbox id="funcionamento" value="#{fornecedorBean.fornecedor.situacaoFuncionamento}"/>
+		
+		</h:panelGrid>
+		
+		</p:fieldset>
+		
+		<p:fieldset legend="Dados do Endereço" style="background-color: #CDC9C9; margin-bottom: 10px;">
+		
+			<h:panelGrid columns="4">
+
+					<h:outputLabel for="comboestados" value="Estado: " />
+					<p:selectOneMenu id="comboestados" value="#{fornecedorBean.fornecedor.estados}" 
+					converter="estadoConverter" immediate="true">
+						<f:selectItem itemLabel="--[Selecione um Estado]--" noSelectionOption="true" />
+						<f:selectItems value="#{fornecedorBean.estados}" />
+						<f:ajax event="change" execute="@this" listener="#{fornecedorBean.carregaCidades}" render="combocidades"/>
+					</p:selectOneMenu>
+					
+					<h:outputLabel for="combocidades" value="Cidades: " />
+					<p:selectOneMenu id="combocidades" value="#{fornecedorBean.fornecedor.cidades}" immediate="true"
+					converter="cidadeConverter">
+						<f:selectItem itemLabel="--[Selecione uma Cidade]--" noSelectionOption="true" />
+						<f:selectItems value="#{fornecedorBean.cidades}" />
+					</p:selectOneMenu>
+
+			</h:panelGrid>
+		
+		</p:fieldset>
+		
+		<p:panelGrid>
+		
+			<p:commandButton action="#{fornecedorBean.salvar}" value="Salvar" title="Salvar"
+			update=":mensagem :formularioFornecedor :formularioTable:tabela"/>
+			
+			<p:commandButton id="botaolimpar"  
+			value="Limpar" title="Limpar Formulário" update="@form" immediate="true">
+				<f:ajax execute="botaolimpar" render="@form" />
+			</p:commandButton>
+		
+		</p:panelGrid>
+		
+	</p:panel>
+	
+	</h:form>
+
+	<h:form id="formularioTable">
+
+		<p:dataTable id="tabela" value="#{fornecedorBean.fornecedores}" var="forn" cellpadding="8" 
+		 width="100%" rules="all" styleClass="colunas" headerClass="cabecalho" 
+		 columnClasses="colunas" rows="5" paginator="true">
+		
+			<f:facet name="header" style="text-align: center;">
+				<h3>Lista de Fornecedores Cadastrados</h3>
+			</f:facet>
+		
+			<p:column style="text-align: center; width: 80px">
+				<f:facet name="header">Código</f:facet>
+				<h:outputText value="#{forn.id}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Razão Social</f:facet>
+				<h:outputText value="#{forn.razaoSocial}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">CNPJ</f:facet>
+				<h:outputText value="#{forn.cnpj}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 120px">
+				<f:facet name="header">Tel Fixo</f:facet>
+				<h:outputText value="#{forn.telFixo}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 120px">
+				<f:facet name="header">Celular 1</f:facet>
+				<h:outputText value="#{forn.telCelular1}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">E-mail</f:facet>
+				<h:outputText value="#{forn.email}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Editar</f:facet>
+				<p:commandLink update=":mensagem :formularioFornecedor :formularioTable:tabela" action="#{fornecedorBean.editar}">
+					<f:setPropertyActionListener value="#{forn}" target="#{fornecedorBean.fornecedor}"/>
+					<h:graphicImage value="/resources/img/edit.png" style="height: 28px; weidth: 28px; text-align: center; padding: 5px;" 
+					title="Atualizar"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Excluir</f:facet>
+				<p:commandLink action="#{fornecedorBean.remove}" update=":mensagem :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{forn}" target="#{fornecedorBean.fornecedor}" />
+					<p:confirm header="Atenção" message="Tem certeza que deseja excluir este registro?"/>
+					<h:graphicImage value="/resources/img/exc28.png" style="height: 28px; weidth: 28px; padding: 5px;" 
+					title="Excluir"/>
+				</p:commandLink>
+			</p:column>
+			
+		
+		</p:dataTable>
+
+		<!-- Janela de confirmação -->
+		<p:confirmDialog global="true">
+
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" ícone="fa fa-check" />
+
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" ícone="fa fa-times" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+</h:body>	
+
+</html>

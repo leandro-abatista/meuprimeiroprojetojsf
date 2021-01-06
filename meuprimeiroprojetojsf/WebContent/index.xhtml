@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset= UTF-8" />
+	<title>Autenticação de Usuário</title>
+</h:head>
+
+<h:body>
+
+	<p:growl id="mensagem" />
+
+	<p:dialog header="Autenticação de Usuário" closable="false" 
+	draggable="false" resizable="false" modal="true" visible="true" 
+	style="text-align: center; font-weight: bold; background-color: #5F9EA0;" responsive="true" 
+	width="400" height="300">
+	
+		<h:form id="formularioLogin">
+	
+
+			<h:panelGrid columns="2">
+			
+				<f:facet name="header">
+					<h3>Realize o Login e a senha para acesso ao sistema.</h3>
+				</f:facet>
+
+				<p:outputLabel for="campologin" value="Login: " />
+				<p:inputText id="campologin" value="#{usuarioBean.usuario.login}"
+					size="30" pt:placeholder="Informe o usuário" 
+					required="true" requiredMessage="Informe o campo 'Login'">
+					
+					
+				</p:inputText>
+
+				<p:outputLabel for="camposenha" value="Senha: "/>
+				<p:password id="camposenha" value="#{usuarioBean.usuario.senha}"
+					size="30" pt:placeholder="Informe a senha" 
+					required="true" requiredMessage="Informe o campo 'Senha'">
+					
+					
+				</p:password>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="1" style="text-align: center;">
+			
+				<p:commandButton value="Acessar" action="#{usuarioBean.logar}" 
+				update=":mensagem :formularioLogin" process="@form" icon="pi pi-sign-out"
+				style="width: 300px; height: 40px; margin-left: 50px; margin-top: 10px; 
+				margin-bottom: 10px; cursor: pointer; font-weight: bold; background-color: #4682B4;" />
+				
+			</h:panelGrid>
+			
+			</h:form>
+	
+	</p:dialog>
+	
+</h:body>
+
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css" />
+	<title>Cadastro de Usuários</title>
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+	
+	<p:growl id="mensagem" />
+
+	<h:form id="formularioUsuario" rendered="#{usuarioBean.permissaoAcesso('Administrador')}">
+	
+	<p:panel id="painelusuario" style="background-color: #CDC9C9;">
+	
+		<p:fieldset legend="Dados do Usuário" style="background-color: #CDC9C9; margin-bottom: 10px;">
+	
+		<h:panelGrid columns="2" style="margin-bottom:10px">
+
+			<p:outputLabel for="id" value="Código:" />
+			<p:inputText id="id" value="#{usuarioBean.usuario.id}" readonly="true" size="10"/>
+
+			<p:outputLabel for="nome" value="Nome:" />
+			<p:inputText id="nome" value="#{usuarioBean.usuario.nome}" size="20" 
+			required="true" requiredMessage="Informe o campo 'Nome'"/>
+
+			<p:outputLabel for="sobrenome" value="Sobrenome:" />
+			<p:inputText id="sobrenome" value="#{usuarioBean.usuario.sobrenome}" size="50"
+			required="true" requiredMessage="Informe o campo 'Sobrenome'"/>
+
+			<p:outputLabel for="login" value="Login:" />
+			<p:inputText id="login" value="#{usuarioBean.usuario.login}" 
+			required="true" requiredMessage="Informe o campo 'Login'"/>
+			
+			<p:outputLabel for="senha" value="Senha:" />
+			<p:password id="senha" value="#{usuarioBean.usuario.senha}" 
+		    weakLabel="Senha Fraca" goodLabel="Senha Média" strongLabel="Senha Alta" feedback="true"
+			required="true" requiredMessage="Informe o campo 'Senha'"/>
+			
+			<h:outputLabel for="telefone" value="Telefone:" />
+			<p:inputMask mask="(99) 9.9999-9999" id="telefone" value="#{usuarioBean.usuario.telefone}"/>
+
+			<p:outputLabel for="email" value="Email:" />
+			<p:inputText id="email" value="#{usuarioBean.usuario.email}" size="50" 
+			required="true" requiredMessage="Informe o campo 'E-mail'"/>
+			
+			<p:outputLabel for="campoativo" value="Ativo:" />
+			<p:selectBooleanCheckbox id="campoativo" value="#{usuarioBean.usuario.ativo}"/>
+			
+			<p:outputLabel for="campoperfil" value="Perfil: " />
+			<p:selectOneMenu id="campoperfil" value="#{usuarioBean.usuario.perfil}" 
+			required="true" requiredMessage="Informe o campo 'Perfil'">
+
+				<f:selectItem noSelectionOption="true" itemLabel="Selecione"
+					itemValue="" />
+				<f:selectItem itemValue="Administrador" itemLabel="Administrador" />
+				<f:selectItem itemValue="Usuario" itemLabel="Usuario" />
+
+			</p:selectOneMenu>
+
+		</h:panelGrid>
+		
+		</p:fieldset>
+		
+		<p:panelGrid>
+		
+			<p:commandButton action="#{usuarioBean.salvar}" value="Salvar" title="Salvar"
+			update=":mensagem :formularioUsuario :formularioTable:tabela"/>
+			
+			<p:commandButton id="botaonovo" action="#{usuarioBean.novo}" value="Novo" title="Novo" >
+				<f:ajax execute="botaoNovo" render="@form"/>
+			</p:commandButton>
+			
+			<p:commandButton id="botaolimpar" action="#{usuarioBean.limpar}" 
+			value="Limpar" title="Limpar Formulário" update="@form" immediate="true">
+				
+			</p:commandButton>
+		
+		</p:panelGrid>
+		
+	</p:panel>
+	
+	</h:form>
+
+	<h:form id="formularioTable" rendered="#{usuarioBean.permissaoAcesso('Administrador')}">
+
+		<p:dataTable id="tabela" value="#{usuarioBean.usuarios}" var="user" cellpadding="8" 
+		 width="100%" rules="all" styleClass="colunas" headerClass="cabecalho" 
+		 columnClasses="colunas" rows="5" paginator="true">
+		
+			<f:facet name="header" style="text-align: center;">
+				<h3>Lista de Usuários Cadastrados</h3>
+			</f:facet>
+		
+			<p:column style="text-align: center; width: 80px">
+				<f:facet name="header">Código</f:facet>
+				<h:outputText value="#{user.id}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{user.nome} #{user.sobrenome}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 120px">
+				<f:facet name="header">Telefone</f:facet>
+				<h:outputText value="#{user.telefone}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">E-mail</f:facet>
+				<h:outputText value="#{user.email}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 90px">
+				<f:facet name="header">Perfil</f:facet>
+				<h:outputText value="#{user.perfil}" />
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Editar</f:facet>
+				<p:commandLink update=":mensagem :formularioUsuario :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{user}" target="#{usuarioBean.usuario}"/>
+					<h:graphicImage value="/resources/img/edit.png" style="height: 28px; weidth: 28px; text-align: center; padding: 5px;" 
+					title="Atualizar"/>
+				</p:commandLink>
+			</p:column>
+			
+			<p:column style="text-align: center; width: 50px">
+				<f:facet name="header">Excluir</f:facet>
+				<p:commandLink action="#{usuarioBean.remove}" update=":mensagem :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{user}" target="#{usuarioBean.usuario}" />
+					<p:confirm header="Atenção" message="Tem certeza que deseja excluir este registro?"/>
+					<h:graphicImage value="/resources/img/exc28.png" style="height: 28px; weidth: 28px; padding: 5px;" 
+					title="Excluir"/>
+				</p:commandLink>
+			</p:column>
+			
+		
+		</p:dataTable>
+
+		<!-- Janela de confirmação -->
+		<p:confirmDialog global="true">
+
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" ícone="fa fa-check" />
+
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" ícone="fa fa-times" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+</h:body>	
+
+</html>

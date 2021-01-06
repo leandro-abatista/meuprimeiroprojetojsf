@@ -1,0 +1,48 @@
+
+body {
+	background: DarkGray;
+}
+
+.ui-panel {
+	background: LightSteelBlue;
+	color: white;
+	font-size: 105% !important;
+}
+
+.ui-button {
+	background: LimeGreen !important;
+	padding: 2px 100px !important;
+	border-radius: 4px !important;
+	color: white !important;
+	font-weight: bold;
+	display: block;
+	overflow: hidden;
+	background-position: center;
+	box-shadow: 3px 3px 3px LightGrey;
+	
+}
+
+.img {
+	display: block;
+	margin-left: 100px;
+	margin-right: 100px;
+	margin-height: 100px;
+	padding: 5px;
+	width: 100px;
+	height: 100px;
+	background-position: center;
+}
+
+.ui-inputMask{
+	background: LimeGreen !important;
+}
+
+h4 {
+	color: RoyalBlue;
+	text-align: center;
+}
+
+h5 {
+	color: RoyalBlue;
+	text-align: center;
+}

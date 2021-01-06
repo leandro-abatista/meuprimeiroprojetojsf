@@ -1,0 +1,48 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	background-color: #D3D3D3;
+}
+
+form{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.div-header{
+	background-color: #CD853F;
+	padding: 10px;
+	margin-bottom: 20px;
+	height: 60px;
+}
+
+h3{
+	height: 40px;
+	line-height: 40px;
+}
+
+.cabecalho{
+	font-size: 10px Arial, sans-serif;
+	color: Snow;
+	background: #4682B4;
+	font-weight: bold;
+}
+
+#outp{
+	background-color: gray;
+}
+
+menu{
+	font-weight: bold;
+}
+
+.colunas{
+	text-align: center;
+	font-size: 10px Arial, sans-serif;
+	background: #A4D3EE;
+}
+

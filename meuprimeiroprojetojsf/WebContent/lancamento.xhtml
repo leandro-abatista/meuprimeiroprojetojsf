@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css"/>
+	<title>Lançamentos</title>
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+	
+	<p:growl id="mensagem" />
+
+	<h:form id="formularioLancamento">
+	
+	<p:panel style="background-color: #CDC9C9;">
+	
+		<p:fieldset legend="Dados do Lançamento" style="background-color: #CDC9C9; margin-bottom: 10px;">
+
+		<h:panelGrid columns="2">
+
+			<h:outputLabel for="campoid" value="Código: " />
+			<p:inputText id="campoid" value="#{lancamentoBean.lancamento.id}"
+				readonly="true" size="10" />
+
+			<h:outputLabel for="camponotafiscal" value="Nota Fiscal: " />
+			<p:inputMask id="camponotafiscal" value="#{lancamentoBean.lancamento.numeroNotaFiscal}" 
+			required="true" requiredMessage="Informe o campo 'Nota Fiscal'"  maxlength="12" size="12" mask="999999999999"/>
+
+			<h:outputLabel for="campoempresaorigem" value="Empresa Origem: " />
+			<p:inputText id="campoempresaorigem" value="#{lancamentoBean.lancamento.empresaOrigem}" size="80" 
+			required="true" requiredMessage="Informe o campo 'Empresa Origem'"/>
+
+			<h:outputLabel for="campoempresadestino" value="Empresa Destino: " />
+			<p:inputText id="campoempresadestino" value="#{lancamentoBean.lancamento.empresaDestino}" size="80" 
+			required="true" requiredMessage="Informe o campo 'Empresa Destino'"/>
+
+		</h:panelGrid>
+
+		</p:fieldset>
+		
+		<p:panelGrid>
+
+			<p:commandButton action="#{lancamentoBean.salvar}" value="Salvar" title="Salvar" 
+			update=":mensagem :formularioLancamento :formularioTable:tabela"/>
+			
+			<p:commandButton id="botaonovo" action="#{lancamentoBean.novo}" value="Novo" title="Novo">
+				<f:ajax execute="botaoNovo" render="@form"/>
+			</p:commandButton>
+			
+			<p:commandButton id="botaolimpar" action="#{lancamentoBean.limpar}" value="Limpar" title="Limpar Formulário">
+				<f:ajax execute="botaolimpar" render="@form"/>
+			</p:commandButton>
+			
+		</p:panelGrid>
+
+	</p:panel>
+	
+	</h:form>
+	
+	<h:form id="formularioTable">
+
+		<p:dataTable id="tabela" value="#{lancamentoBean.lancamentos}" var="lanc"
+		width="100%" rules="all" styleClass="colunas" headerClass="cabecalho" 
+		columnClasses="colunas" rows="5" paginator="true">
+
+			<f:facet name="header">
+				<h3>Lista de Lançamentos</h3>	
+			</f:facet>
+
+			<p:column>
+				<f:facet name="header">Código</f:facet>
+				<h:outputLabel value="#{lanc.id}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Nota Fiscal</f:facet>
+				<h:outputLabel value="#{lanc.numeroNotaFiscal}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Empresa Origem</f:facet>
+				<h:outputLabel value="#{lanc.empresaOrigem}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Empresa Destino</f:facet>
+				<h:outputLabel value="#{lanc.empresaDestino}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Usuário Responsável</f:facet>
+				<h:outputLabel value="#{lanc.usuario.nome}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Editar</f:facet>
+				<p:commandLink>
+					<f:setPropertyActionListener value="#{lanc}" target="#{lancamentoBean.lancamento}" />
+					<h:graphicImage value="/resources/img/edit.png"
+						style="height: 28px; weidth: 28px; text-align: center; padding: 5px;"
+						title="Atualizar" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Excluir</f:facet>
+				<p:commandLink action="#{lancamentoBean.remove}" update=":mensagem :formularioTable:tabela">
+					<f:setPropertyActionListener value="#{lanc}" target="#{lancamentoBean.lancamento}" />
+					<p:confirm header="Atenção" message="Tem certeza que deseja excluir este registro?"/>
+					<h:graphicImage value="/resources/img/exc28.png"
+						style="height: 28px; weidth: 28px; padding: 5px;" title="Excluir" />
+				</p:commandLink>
+			</p:column>
+
+		</p:dataTable>
+		
+		<!-- Janela de confirmação -->
+		<p:confirmDialog global="true">
+
+			<p:commandButton value="Sim" type="button"
+				styleClass="ui-confirmdialog-yes" ícone="fa fa-check" />
+
+			<p:commandButton value="Não" type="button"
+				styleClass="ui-confirmdialog-no" ícone="fa fa-times" />
+
+		</p:confirmDialog>
+
+	</h:form>
+
+</h:body>	
+
+</html>

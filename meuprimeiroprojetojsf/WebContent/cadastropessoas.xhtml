@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:pe="http://primefaces.org/ui/extensions">
+<!-- composição básica de um página xhtml - JSF -->
+<h:head>
+	<link rel="StyleSheet" type="text/css" href="resources/css/style.css" media="screen"/>
+	<h:outputScript library="jsc" name="scripts.js" />
+	<title>Cadastro de Pessoas</title>
+</h:head>
+
+<h:body>
+
+	<ui:include src="/menu.xhtml" />
+	
+	<p:growl id="mensagem" />
+
+	<h:form id="formularioPessoa">
+	
+	<p:panel id="panelPessoa" style="background-color: #CDC9C9;">
+	
+		<p:fieldset legend="Dados Pessoais" style="background-color: #CDC9C9;">
+	
+		<h:panelGrid columns="2" style="margin-bottom:10px" >
+
+			<h:outputLabel for="id" value="Código: " />
+			<p:inputText id="id" value="#{pessoaBean.pessoa.id}" readonly="true" size="10"/>
+			
+		</h:panelGrid>
+		
+		<h:panelGrid columns="6" style="margin-bottom:10px">
+			
+			<h:outputLabel for="nome" value="Nome:" />
+			<p:inputText id="nome" value="#{pessoaBean.pessoa.nome}" size="30" pt:placeholder="Informe o nome da pessoa"
+			required="true" requiredMessage="Informe o nome da pessoa!" validatorMessage="Nome tem que ter no mínimo 5 letras!">
+				
+				<f:validateLength minimum="5" maximum="50"/>
+				
+			</p:inputText>
+
+			<h:outputLabel for="sobrenome" value="Sobrenome: " />
+			<p:inputText id="sobrenome" value="#{pessoaBean.pessoa.sobrenome}" size="30" 
+			pt:placeholder="Informe o sobrenome da pessoa"/>
+			
+			<h:outputLabel for="camposexo" value="Sexo: " />
+			<p:selectOneMenu id="camposexo" value="#{pessoaBean.pessoa.sexo}">
+
+				<f:selectItem noSelectionOption="true" itemLabel="Selecione" itemValue="" />
+				<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+				<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+
+			</p:selectOneMenu>
+			
+			</h:panelGrid>
+			
+			<h:panelGrid columns="6" style="margin-bottom:10px">
+
+			<h:outputLabel for="idade" value="Data Nascimento: " />
+			<p:calendar value="#{pessoaBean.pessoa.dataNascimento}"
+				converterMessage="Data de Nascimento Errada!" maxlength="10" pattern="dd/MM/yyyy" mask="true"
+				 locale="pt_BR" timeZone="GMT-03:00"/>
+				
+
+			<h:outputLabel for="idade" value="Idade: " />
+			<p:inputText id="idade" value="#{pessoaBean.pessoa.idade}" size="5"
+			maxlength="3" />
+
+			<h:outputLabel for="email" value="Email: " />
+			<p:inputText id="email" value="#{pessoaBean.pessoa.email}" size="50" />
+
+		</h:panelGrid>
+			
+			<h:panelGrid columns="8" style="margin-bottom:10px">
+
+			<h:outputLabel for="campocpf" value="CPF: " />
+			<p:inputText id="campocpf" value="#{pessoaBean.pessoa.cpf}"
+				pt:placeholder="Informe o cpf válido" maxlength="14"/>
+
+			<h:outputLabel for="camporg" value="RG: " />
+			<p:inputText id="camporg" value="#{pessoaBean.pessoa.rg}"
+				pt:placeholder="Informe o rg válido" />
+
+			<h:outputLabel for="campoemissor" value="Emissor: " />
+			<p:selectOneRadio id="campoemissor"
+				value="#{pessoaBean.pessoa.emissor}">
+				<f:selectItem itemValue="SSP" itemLabel="SSP" />
+				<f:selectItem itemValue="SDS" itemLabel="SDS" />
+			</p:selectOneRadio>
+			
+			<h:outputLabel for="campoativo" value="Ativo: " />
+			<p:selectBooleanCheckbox id="campoativo" value="#{pessoaBean.pessoa.ativo}">
+			
+			</p:selectBooleanCheckbox>
+
+		</h:panelGrid>
+		
+		<h:panelGrid columns="4" style="margin-top: 10px">
+
+			<h:outputLabel for="campoatividade" value="Atividades Física: " />
+			<p:selectManyMenu id="campoatividade"
+				value="#{pessoaBean.pessoa.atividadesFisicas}"
+				style="height: 120px;">
+
+				<f:selectItem itemValue="Caminhada" itemLabel="Caminhada" />
+				<f:selectItem itemValue="Corrida" itemLabel="Corrida" />
+				<f:selectItem itemValue="Vôlei" itemLabel="Vôlei" />
+				<f:selectItem itemValue="Bicicleta" itemLabel="Bicicleta" />
+				<f:selectItem itemValue="Futebol" itemLabel="Futebol" />
+				<f:selectItem itemValue="Natação" itemLabel="Natação" />
+
+			</p:selectManyMenu>
+			
+			
+			<h:outputLabel value="Ativ. Física: " />
+			<p:selectManyCheckbox layout="pageDirection" value="#{pessoaBean.pessoa.ativfisicas}">
+				
+				<f:selectItem itemValue="Caminhada" itemLabel="Caminhada"/>
+				<f:selectItem itemValue="Corrida" itemLabel="Corrida"/>
+				<f:selectItem itemValue="Vôlei" itemLabel="Vôlei"/>
+				<f:selectItem itemValue="Bicicleta" itemLabel="Bicicleta"/>
+				<f:selectItem itemValue="Futebol" itemLabel="Futebol"/>
+				<f:selectItem itemValue="Futebol de Areia" itemLabel="Futebol de Areia"/>
+				<f:selectItem itemValue="Vôlei de Praia" itemLabel="Vôlei de Praia"/>
+			
+			</p:selectManyCheckbox>
+			
+		</h:panelGrid>
+		
+		</p:fieldset>
+		
+		<br/>
+		
+		<p:fieldset legend="Dados Endereço" style="background-color: #CDC9C9; margin-bottom: 10px;">
+		
+		<h:panelGrid columns="4" style="margin-bottom:10px">
+			
+			<h:outputLabel for="campocep" value="CEP: " />
+			<p:inputText id="campocep" value="#{pessoaBean.pessoa.cep}" pt:placeholder="Informe um cep" size="12">
+				<f:ajax event="blur" execute="@this" listener="#{pessoaBean.pesquisaCep}" 
+				render="campologradouro campocomplemento campobairro 
+				campolocalidade campouf campoibge campogia campoddd camposiafi" />
+			</p:inputText>
+			
+			<h:outputLabel for="campologradouro" value="Logradouro: " />
+			<p:inputText id="campologradouro" value="#{pessoaBean.pessoa.logradouro}" />
+			
+			<h:outputLabel for="campocomplemento" value="Complemento: " />
+			<p:inputText id="campocomplemento" value="#{pessoaBean.pessoa.complemento}" />
+			
+			<h:outputLabel for="campobairro" value="Bairro: " />
+			<p:inputText id="campobairro" value="#{pessoaBean.pessoa.bairro}" />
+			
+			<h:outputLabel for="campolocalidade" value="Cidade: " />
+			<p:inputText id="campolocalidade" value="#{pessoaBean.pessoa.localidade}" />
+			
+			<h:outputLabel for="campouf" value="Estado: " />
+			<p:inputText id="campouf" value="#{pessoaBean.pessoa.uf}" size="2"/>
+			
+			<h:outputLabel for="campoibge" value="IBGE: " />
+			<p:inputText id="campoibge" value="#{pessoaBean.pessoa.ibge}" />
+			
+			<h:outputLabel for="campogia" value="GIA: " />
+			<p:inputText id="campogia" value="#{pessoaBean.pessoa.gia}" />
+			
+			<h:outputLabel for="campoddd" value="DDD: " />
+			<p:inputText id="campoddd" value="#{pessoaBean.pessoa.ddd}" size="2"/>
+			
+			<h:outputLabel for="camposiafi" value="SIAFI: " />
+			<p:inputText id="camposiafi" value="#{pessoaBean.pessoa.siafi}" />
+			
+		</h:panelGrid>
+		
+		</p:fieldset>
+		
+		<p:panelGrid>
+		
+			<p:commandButton action="#{pessoaBean.salvar}" value="Salvar"
+				title="Salvar"
+				update=":mensagem :formularioPessoa :formularioTable:tabela" />
+	
+			<p:commandButton id="botaoNovo" action="#{pessoaBean.novo}"
+				value="Novo" title="Novo">
+				<f:ajax execute="botaoNovo" render="@form" />
+			</p:commandButton>
+	
+			<p:commandButton id="botaoLimpar" action="#{pessoaBean.limpar}" update="@form"
+				value="Limpar" title="Limpar Formulário">
+				<f:ajax execute="botaoLimpar" render="@form" />
+			</p:commandButton>
+		
+		</p:panelGrid>
+
+	</p:panel>
+
+
+	</h:form>
+
+	<h:form id="formularioTable">
+	
+		<p:dataTable id="tabela" value="#{pessoaBean.pessoas}" var="pes" cellpadding="8" 
+		 width="100%" rules="all" styleClass="colunas" headerClass="cabecalho" 
+		 columnClasses="colunas" rows="5" paginator="true" multiViewState="true"
+		>
+		
+			<f:facet name="header">
+				<h3>Lista de Pessoas Cadastradas</h3>
+			</f:facet>
+		
+			<p:column>
+				<f:facet name="header">Código</f:facet>
+				<h:outputText value="#{pes.id}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Nome</f:facet>
+				<h:outputText value="#{pes.nome} #{pes.sobrenome}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">CPF</f:facet>
+				<h:outputText value="#{pes.cpf}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Idade</f:facet>
+				<h:outputText value="#{pes.idade}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">E-mail</f:facet>
+				<h:outputText value="#{pes.email}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Sexo</f:facet>
+				<h:outputText value="#{pes.sexo}" />
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Editar</f:facet>
+				<h:commandLink>
+					<f:setPropertyActionListener value="#{pes}" target="#{pessoaBean.pessoa}"/>
+					<h:graphicImage value="/resources/img/edit.png" 
+					style="height: 28px; weidth: 28px; text-align: center; padding: 5px;" title="Atualizar"/>
+				</h:commandLink>
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Excluir</f:facet>
+				<h:commandLink action="#{pessoaBean.remove}">
+					<f:setPropertyActionListener value="#{pes}" target="#{pessoaBean.pessoa}" />
+					<h:graphicImage value="/resources/img/exc28.png" 
+					style="height: 28px; weidth: 28px; text-align: center; padding: 5px;" title="Excluir"/>
+				</h:commandLink>
+			</p:column>
+		
+		</p:dataTable>
+		
+	</h:form>
+		
+</h:body>	
+
+</html>
